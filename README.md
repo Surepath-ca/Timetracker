@@ -5,7 +5,7 @@ employees log time against client engagements (Clockify-style weekly grid), capt
 work comment on every entry, and lets project owners extract Excel time reports and
 generate invoices for the time charged.
 
-Built with Next.js 14 (App Router), TypeScript, Tailwind CSS, Prisma + SQLite, and
+Built with Next.js 14 (App Router), TypeScript, Tailwind CSS, Prisma + PostgreSQL, and
 ExcelJS. Styled in SurePath's navy-and-gold brand palette.
 
 ## Features
@@ -46,16 +46,20 @@ cp .env.example .env
 
 | Variable | Purpose |
 | --- | --- |
-| `DATABASE_URL` | SQLite connection string (default `file:./dev.db`). |
+| `DATABASE_URL` | PostgreSQL connection string. Use a **direct (non-pooled)** connection — the build runs `prisma migrate deploy`, which needs one. |
 | `SESSION_SECRET` | **Required in production.** A long random string used to sign session JWTs. Generate one with `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. |
 | `ALLOWED_EMAIL_DOMAINS` | Comma-separated list of permitted email domains. Defaults to `surepathvaluation.ca`. |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | SMTP server used to email OTP codes. **If `SMTP_HOST` is unset (local dev), OTP codes are printed to the server console instead of emailed.** |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | SMTP server used to email OTP codes. **In production these are required so users receive their code. If `SMTP_HOST` is unset (local dev only), OTP codes are printed to the server console instead of emailed.** |
 
 ### 3. Set up the database
 
+You need a PostgreSQL database. Locally you can run one with Docker:
+
 ```bash
+docker run -d --name tt-pg -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=timetracker -p 5432:5432 postgres:16
+# then set DATABASE_URL="postgresql://postgres:postgres@localhost:5432/timetracker?schema=public"
 npx prisma migrate deploy   # apply migrations
-# (for a fresh dev database: npx prisma migrate dev)
+# (for a fresh dev database with schema changes: npx prisma migrate dev)
 ```
 
 ### 4. Run
@@ -65,6 +69,26 @@ npm run dev      # development, http://localhost:3000
 # or
 npm run build && npm run start   # production
 ```
+
+## Deploying to Vercel
+
+> **Important:** this app requires PostgreSQL. SQLite (`file:…`) does **not** work on
+> Vercel — its serverless filesystem is read-only and ephemeral, which is why an on-disk
+> database returns 500 ("Something went wrong") on every request.
+
+1. **Provision Postgres.** Use Vercel Postgres, [Neon](https://neon.tech), or Supabase
+   (all have free tiers).
+2. **Set environment variables** in the Vercel project (Settings → Environment Variables),
+   for the Production environment:
+   - `DATABASE_URL` — your Postgres **direct** connection string.
+   - `SESSION_SECRET` — a long random string (see command above).
+   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` — your mail provider
+     (e.g. SendGrid, Postmark, Amazon SES, Gmail SMTP). **Without SMTP, users never
+     receive the code** and cannot sign in.
+   - `ALLOWED_EMAIL_DOMAINS` — optional; defaults to `surepathvaluation.ca`.
+3. **Redeploy.** The `build` script runs `prisma generate && prisma migrate deploy` before
+   `next build`, so the schema is created/updated on the database automatically at deploy
+   time.
 
 ## How authentication works
 
@@ -114,7 +138,8 @@ prisma/schema.prisma           # data model
 
 ## Notes
 
-- SQLite keeps deployment simple; to move to Postgres, change the `datasource` provider in
-  `prisma/schema.prisma` and `DATABASE_URL`, then re-run migrations.
+- PostgreSQL is used so the app runs on serverless platforms like Vercel. For a very low
+  volume internal app a direct connection is fine; if you later need pooling, add a
+  `directUrl` to the Prisma `datasource` for the migration step.
 - Excel files are generated server-side with ExcelJS and streamed as downloads; nothing is
   persisted to disk.
