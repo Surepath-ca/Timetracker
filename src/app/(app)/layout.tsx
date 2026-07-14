@@ -16,7 +16,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <div className="flex items-center gap-8">
             <a href="/tracker" className="shrink-0">
-              <Logo className="h-7" />
+              <Logo className="h-9" />
             </a>
             <div className="hidden md:block">
               <NavLinks />

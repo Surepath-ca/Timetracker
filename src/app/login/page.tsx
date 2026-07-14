@@ -68,7 +68,7 @@ export default function LoginPage() {
       <div className="flex flex-1 items-center justify-center px-6 py-12">
         <div className="w-full max-w-md">
           <div className="mb-8 flex justify-center">
-            <Logo className="h-11" showTagline />
+            <Logo className="h-16" />
           </div>
 
           <div className="card p-8">
