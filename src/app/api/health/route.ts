@@ -1,15 +1,37 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { timingSafeEqual } from "crypto";
 import { prisma } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/** Constant-time string comparison that never throws on length mismatch. */
+function safeEqual(a: string, b: string): boolean {
+  const ba = Buffer.from(a);
+  const bb = Buffer.from(b);
+  if (ba.length !== bb.length) return false;
+  return timingSafeEqual(ba, bb);
+}
+
 /**
- * Public diagnostics endpoint. Reports whether the deployment is configured
- * correctly WITHOUT exposing any secret values (only booleans + error text).
- * Useful for debugging Vercel deploys. Safe to leave in — it reveals no secrets.
+ * Diagnostics endpoint, protected by a secret token so it is not public.
+ *
+ * Access requires HEALTH_CHECK_TOKEN to be set (as an env var) and supplied on
+ * the request via `?token=...` or the `x-health-token` header. If the token is
+ * not configured or does not match, the endpoint responds 404 so its existence
+ * is not revealed. It stays reachable without a login so you can diagnose a
+ * broken deploy (e.g. database down) when you can't sign in.
+ *
+ * It never returns secret VALUES — only booleans, the DB host, and the commit.
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const expected = process.env.HEALTH_CHECK_TOKEN;
+  const provided =
+    req.nextUrl.searchParams.get("token") || req.headers.get("x-health-token") || "";
+  if (!expected || !safeEqual(provided, expected)) {
+    return new NextResponse("Not found", { status: 404 });
+  }
+
   const result: Record<string, unknown> = {
     ok: true,
     commit: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 8) || "unknown",

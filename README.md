@@ -92,9 +92,11 @@ npm run build && npm run start   # production
 3. **Redeploy.** The `build` script runs `prisma generate && prisma migrate deploy` before
    `next build`, so the schema is created/updated on the database automatically at deploy
    time.
-4. **Verify.** After the deploy finishes, open `/api/health` on your deployment. It reports
-   whether the database is reachable and the tables exist — a quick way to confirm the fix
-   without digging through logs.
+4. **Verify.** Set a `HEALTH_CHECK_TOKEN` env var, then open
+   `/api/health?token=YOUR_TOKEN` on your deployment. It reports whether the database is
+   reachable and the tables exist — a quick way to confirm the fix without digging through
+   logs. Without the token (or with a wrong one) the endpoint returns 404, so it is not
+   publicly exposed.
 
 ## How authentication works
 
