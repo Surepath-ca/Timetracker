@@ -88,7 +88,7 @@ function ReportsInner() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-navy-900">Reports &amp; Invoices</h1>
+        <h1 className="text-2xl font-bold text-surepath-900">Reports &amp; Invoices</h1>
         <p className="text-sm text-slate-500">
           Extract time charged with comments for projects you own, then export to Excel or generate an
           invoice.
@@ -136,7 +136,7 @@ function ReportsInner() {
                   <button className="btn-secondary" onClick={downloadExcel}>
                     ⬇ Export to Excel
                   </button>
-                  <button className="btn-gold" onClick={() => setShowInvoice(true)}>
+                  <button className="btn-primary" onClick={() => setShowInvoice(true)}>
                     Generate invoice
                   </button>
                 </>
@@ -155,7 +155,7 @@ function ReportsInner() {
 
               {report.memberSummaries.length > 0 && (
                 <div className="card p-5">
-                  <h2 className="mb-3 text-lg font-semibold text-navy-900">Summary by member</h2>
+                  <h2 className="mb-3 text-lg font-semibold text-surepath-900">Summary by member</h2>
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-slate-200 text-left text-slate-500">
@@ -168,7 +168,7 @@ function ReportsInner() {
                     <tbody>
                       {report.memberSummaries.map((m) => (
                         <tr key={m.userId} className="border-b border-slate-100">
-                          <td className="py-2 font-medium text-navy-900">{m.name || m.email.split("@")[0]}</td>
+                          <td className="py-2 font-medium text-surepath-900">{m.name || m.email.split("@")[0]}</td>
                           <td className="py-2 text-slate-500">{m.email}</td>
                           <td className="py-2 text-right">{hours(m.minutes)}</td>
                           <td className="py-2 text-right">{formatMinutes(m.minutes)}</td>
@@ -180,7 +180,7 @@ function ReportsInner() {
               )}
 
               <div className="card p-5">
-                <h2 className="mb-3 text-lg font-semibold text-navy-900">Detailed entries with comments</h2>
+                <h2 className="mb-3 text-lg font-semibold text-surepath-900">Detailed entries with comments</h2>
                 {report.entries.length === 0 ? (
                   <p className="text-sm text-slate-400">No time charged in this period.</p>
                 ) : (
@@ -198,7 +198,7 @@ function ReportsInner() {
                         {report.entries.map((e) => (
                           <tr key={e.id} className="border-b border-slate-100 align-top">
                             <td className="py-2 whitespace-nowrap text-slate-600">{e.date}</td>
-                            <td className="py-2 whitespace-nowrap font-medium text-navy-900">
+                            <td className="py-2 whitespace-nowrap font-medium text-surepath-900">
                               {e.userName || e.userEmail.split("@")[0]}
                             </td>
                             <td className="py-2 text-right">{formatMinutes(e.minutes)}</td>
@@ -230,7 +230,7 @@ function StatCard({ label, value, sub }: { label: string; value: string; sub: st
   return (
     <div className="card p-5">
       <p className="text-xs uppercase tracking-wide text-slate-400">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-navy-900">{value}</p>
+      <p className="mt-1 text-2xl font-bold text-surepath-900">{value}</p>
       <p className="text-xs text-slate-400">{sub}</p>
     </div>
   );
@@ -324,12 +324,12 @@ function InvoiceModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/50 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-surepath-950/50 p-4" onClick={onClose}>
       <div
         className="card max-h-[90vh] w-full max-w-2xl overflow-y-auto p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-semibold text-navy-900">Generate invoice — {report.project.name}</h3>
+        <h3 className="text-lg font-semibold text-surepath-900">Generate invoice — {report.project.name}</h3>
         <p className="text-sm text-slate-500">
           Period {report.from} to {report.to} · {hours(report.totalMinutes)} hours
         </p>
@@ -435,7 +435,7 @@ function InvoiceModal({
               <span>{taxLabel}</span>
               <span>{currency} {preview.tax.toFixed(2)}</span>
             </div>
-            <div className="mt-1 flex justify-between border-t border-slate-200 pt-1 font-semibold text-navy-900">
+            <div className="mt-1 flex justify-between border-t border-slate-200 pt-1 font-semibold text-surepath-900">
               <span>Total</span>
               <span>{currency} {preview.total.toFixed(2)}</span>
             </div>
@@ -446,7 +446,7 @@ function InvoiceModal({
             <button type="button" className="btn-secondary" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="btn-gold" disabled={busy}>
+            <button type="submit" className="btn-primary" disabled={busy}>
               {busy ? "Generating…" : "⬇ Generate invoice (Excel)"}
             </button>
           </div>

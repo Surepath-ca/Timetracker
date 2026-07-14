@@ -41,12 +41,12 @@ export default function ProjectsPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-navy-900">Projects</h1>
+          <h1 className="text-2xl font-bold text-surepath-900">Projects</h1>
           <p className="text-sm text-slate-500">
             Create engagements, add team members, and manage ownership.
           </p>
         </div>
-        <button className="btn-gold" onClick={() => setShowNew(true)}>
+        <button className="btn-primary" onClick={() => setShowNew(true)}>
           + New Project
         </button>
       </div>
@@ -56,7 +56,7 @@ export default function ProjectsPage() {
       ) : projects.length === 0 ? (
         <div className="card p-10 text-center">
           <p className="text-slate-500">No projects yet. Create your first engagement to get started.</p>
-          <button className="btn-gold mt-4" onClick={() => setShowNew(true)}>
+          <button className="btn-primary mt-4" onClick={() => setShowNew(true)}>
             + New Project
           </button>
         </div>
@@ -66,15 +66,15 @@ export default function ProjectsPage() {
             <Link
               key={p.id}
               href={`/projects/${p.id}`}
-              className="card group p-5 transition hover:border-navy-400 hover:shadow-md"
+              className="card group p-5 transition hover:border-surepath-400 hover:shadow-md"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2">
                   <span className="h-3 w-3 rounded-full" style={{ backgroundColor: p.color }} />
-                  <h3 className="font-semibold text-navy-900 group-hover:text-navy-700">{p.name}</h3>
+                  <h3 className="font-semibold text-surepath-900 group-hover:text-surepath-700">{p.name}</h3>
                 </div>
                 {p.myRole === "OWNER" && (
-                  <span className="rounded-full bg-gold-100 px-2 py-0.5 text-[11px] font-semibold text-gold-800">
+                  <span className="rounded-full bg-surepath-100 px-2 py-0.5 text-[11px] font-semibold text-surepath-800">
                     Owner
                   </span>
                 )}
@@ -142,11 +142,11 @@ function NewProjectModal({ onClose, onCreated }: { onClose: () => void; onCreate
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/50 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-surepath-950/50 p-4"
       onClick={onClose}
     >
       <div className="card w-full max-w-lg p-6" onClick={(e) => e.stopPropagation()}>
-        <h3 className="text-lg font-semibold text-navy-900">New Project</h3>
+        <h3 className="text-lg font-semibold text-surepath-900">New Project</h3>
         <form onSubmit={submit} className="mt-4 space-y-4">
           <div>
             <label className="label">Project name *</label>
@@ -166,7 +166,7 @@ function NewProjectModal({ onClose, onCreated }: { onClose: () => void; onCreate
                     type="button"
                     onClick={() => setColor(c)}
                     className={`h-6 w-6 rounded-full ring-offset-1 transition ${
-                      color === c ? "ring-2 ring-navy-900" : ""
+                      color === c ? "ring-2 ring-surepath-900" : ""
                     }`}
                     style={{ backgroundColor: c }}
                     aria-label={`Color ${c}`}

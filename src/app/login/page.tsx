@@ -63,38 +63,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      {/* Brand panel */}
-      <div className="hidden w-1/2 flex-col justify-between bg-navy-950 p-12 lg:flex">
-        <Logo light size="lg" />
-        <div>
-          <h1 className="max-w-md text-4xl font-bold leading-tight text-white">
-            Track your time with <span className="text-gold-400">clarity</span> and{" "}
-            <span className="text-gold-400">confidence</span>.
-          </h1>
-          <p className="mt-4 max-w-md text-navy-200">
-            The internal time tracking platform for SurePath Valuation &amp; Advisory. Log hours,
-            manage engagements, and generate client-ready reports and invoices.
-          </p>
-        </div>
-        <p className="text-sm text-navy-300">
-          Making the complex clear, and the uncertain manageable.
-        </p>
-      </div>
-
-      {/* Form panel */}
-      <div className="flex w-full items-center justify-center bg-slate-50 p-6 lg:w-1/2">
-        <div className="w-full max-w-sm">
-          <div className="mb-8 lg:hidden">
-            <Logo />
+    <div className="flex min-h-screen flex-col bg-slate-50">
+      <div className="h-1 w-full bg-surepath-500" />
+      <div className="flex flex-1 items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md">
+          <div className="mb-8 flex justify-center">
+            <Logo className="h-11" showTagline />
           </div>
+
           <div className="card p-8">
-            <h2 className="text-xl font-semibold text-navy-900">
-              {step === "email" ? "Sign in" : "Enter verification code"}
-            </h2>
+            <h1 className="text-xl font-semibold text-surepath-800">
+              {step === "email" ? "Employee Sign-In" : "Enter verification code"}
+            </h1>
             <p className="mt-1 text-sm text-slate-500">
               {step === "email"
-                ? "Access is limited to SurePath employees."
+                ? "Access is restricted to SurePath Valuation & Advisory personnel."
                 : notice || "Check your inbox for the code."}
             </p>
 
@@ -140,13 +123,17 @@ export default function LoginPage() {
                   />
                 </div>
                 {error && <p className="text-sm text-red-600">{error}</p>}
-                <button type="submit" disabled={busy || code.length !== 6} className="btn-primary w-full">
+                <button
+                  type="submit"
+                  disabled={busy || code.length !== 6}
+                  className="btn-primary w-full"
+                >
                   {busy ? "Verifying…" : "Verify & sign in"}
                 </button>
                 <div className="flex items-center justify-between text-sm">
                   <button
                     type="button"
-                    className="text-navy-600 hover:underline"
+                    className="text-surepath-600 hover:underline"
                     onClick={() => {
                       setStep("email");
                       setCode("");
@@ -157,7 +144,7 @@ export default function LoginPage() {
                   </button>
                   <button
                     type="button"
-                    className="text-navy-600 hover:underline"
+                    className="text-surepath-600 hover:underline"
                     disabled={busy}
                     onClick={() => requestOtp()}
                   >
@@ -167,7 +154,8 @@ export default function LoginPage() {
               </form>
             )}
           </div>
-          <p className="mt-6 text-center text-xs text-slate-400">
+
+          <p className="mt-8 text-center text-xs text-slate-400">
             © {new Date().getFullYear()} SurePath Valuation &amp; Advisory Professional Corporation
           </p>
         </div>

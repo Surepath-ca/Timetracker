@@ -10,9 +10,9 @@ export const runtime = "nodejs";
 
 type Params = { params: { projectId: string } };
 
-const NAVY = "FF16324F";
-const GOLD = "FFC9A227";
-const LIGHT = "FFF0F5FA";
+const NAVY = "FF243A54";
+const GOLD = "FF355E8C";
+const LIGHT = "FFF2F6FA";
 
 /** Excel time report (owner only): ?from&to */
 export async function GET(req: NextRequest, { params }: Params) {

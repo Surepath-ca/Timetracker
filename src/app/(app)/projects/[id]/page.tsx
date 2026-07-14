@@ -114,14 +114,14 @@ export default function ProjectDetailPage() {
 
   return (
     <div className="max-w-4xl">
-      <Link href="/projects" className="text-sm text-navy-600 hover:underline">
+      <Link href="/projects" className="text-sm text-surepath-600 hover:underline">
         ← All projects
       </Link>
       <div className="mt-2 mb-6 flex items-start justify-between">
         <div className="flex items-center gap-3">
           <span className="h-4 w-4 rounded-full" style={{ backgroundColor: project.color }} />
           <div>
-            <h1 className="text-2xl font-bold text-navy-900">{project.name}</h1>
+            <h1 className="text-2xl font-bold text-surepath-900">{project.name}</h1>
             <p className="text-sm text-slate-500">
               {project.client || "No client"} · {project.billable ? "Billable" : "Non-billable"}
               {project.archived && " · Archived"}
@@ -142,7 +142,7 @@ export default function ProjectDetailPage() {
       )}
 
       <div className="card p-5">
-        <h2 className="text-lg font-semibold text-navy-900">Team Members</h2>
+        <h2 className="text-lg font-semibold text-surepath-900">Team Members</h2>
         <p className="text-sm text-slate-500">
           Only members can log time to this project. Owners can extract reports and invoices.
         </p>
@@ -151,7 +151,7 @@ export default function ProjectDetailPage() {
           {project.members.map((m) => (
             <div key={m.id} className="flex items-center justify-between py-3">
               <div>
-                <div className="font-medium text-navy-900">{m.name || m.email.split("@")[0]}</div>
+                <div className="font-medium text-surepath-900">{m.name || m.email.split("@")[0]}</div>
                 <div className="text-xs text-slate-400">{m.email}</div>
               </div>
               <div className="flex items-center gap-2">
@@ -168,7 +168,7 @@ export default function ProjectDetailPage() {
                   <span
                     className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
                       m.role === "OWNER"
-                        ? "bg-gold-100 text-gold-800"
+                        ? "bg-surepath-100 text-surepath-800"
                         : "bg-slate-100 text-slate-600"
                     }`}
                   >
@@ -220,7 +220,7 @@ export default function ProjectDetailPage() {
 
       {isOwner && (
         <div className="card mt-6 border-red-100 p-5">
-          <h2 className="text-lg font-semibold text-navy-900">Danger zone</h2>
+          <h2 className="text-lg font-semibold text-surepath-900">Danger zone</h2>
           <div className="mt-3 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-slate-700">Delete this project</p>
