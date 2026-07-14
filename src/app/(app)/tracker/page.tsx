@@ -83,7 +83,7 @@ export default function TrackerPage() {
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-navy-900">Time Tracker</h1>
+          <h1 className="text-2xl font-bold text-surepath-900">Time Tracker</h1>
           <p className="text-sm text-slate-500">
             Week of {formatDateShort(monday)} – {formatDateShort(addDays(monday, 6))}
           </p>
@@ -98,7 +98,7 @@ export default function TrackerPage() {
           <button className="btn-secondary" onClick={() => setMonday(addDays(monday, 7))}>
             Next →
           </button>
-          <div className="ml-3 rounded-md bg-navy-900 px-4 py-2 text-sm font-semibold text-white">
+          <div className="ml-3 rounded-md bg-surepath-900 px-4 py-2 text-sm font-semibold text-white">
             Week total: {formatMinutes(weekTotal)}
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function TrackerPage() {
             You are not a member of any project yet. Create a project (or ask a project owner to add
             you) to start tracking time.
           </p>
-          <a href="/projects" className="btn-gold mt-4">
+          <a href="/projects" className="btn-primary mt-4">
             Go to Projects
           </a>
         </div>
@@ -120,12 +120,12 @@ export default function TrackerPage() {
         <div className="card overflow-x-auto">
           <table className="w-full min-w-[900px] border-collapse text-sm">
             <thead>
-              <tr className="bg-navy-950 text-left text-white">
+              <tr className="bg-surepath-950 text-left text-white">
                 <th className="w-56 px-4 py-3 font-semibold">Project</th>
                 {days.map((d) => (
                   <th
                     key={d}
-                    className={`px-2 py-3 text-center font-semibold ${d === today ? "text-gold-300" : ""}`}
+                    className={`px-2 py-3 text-center font-semibold ${d === today ? "text-surepath-300" : ""}`}
                   >
                     {formatDateShort(d)}
                   </th>
@@ -143,7 +143,7 @@ export default function TrackerPage() {
                         style={{ backgroundColor: p.color }}
                       />
                       <div>
-                        <div className="font-medium text-navy-900">{p.name}</div>
+                        <div className="font-medium text-surepath-900">{p.name}</div>
                         {p.client && <div className="text-xs text-slate-400">{p.client}</div>}
                       </div>
                     </div>
@@ -151,16 +151,16 @@ export default function TrackerPage() {
                   {days.map((d) => {
                     const cell = cellEntries(p.id, d);
                     return (
-                      <td key={d} className={`px-1.5 py-2 ${d === today ? "bg-gold-50" : ""}`}>
+                      <td key={d} className={`px-1.5 py-2 ${d === today ? "bg-surepath-50" : ""}`}>
                         <div className="flex min-h-[52px] flex-col items-stretch gap-1">
                           {cell.map((e) => (
                             <button
                               key={e.id}
                               title={e.comment || "No comment"}
                               onClick={() => setModal({ mode: "edit", entry: e })}
-                              className="group rounded border border-navy-200 bg-navy-50 px-2 py-1 text-left transition hover:border-navy-400"
+                              className="group rounded border border-surepath-200 bg-surepath-50 px-2 py-1 text-left transition hover:border-surepath-400"
                             >
-                              <span className="font-semibold text-navy-800">
+                              <span className="font-semibold text-surepath-800">
                                 {formatMinutes(e.minutes)}
                               </span>
                               {e.comment && (
@@ -172,7 +172,7 @@ export default function TrackerPage() {
                           ))}
                           <button
                             onClick={() => setModal({ mode: "add", projectId: p.id, date: d })}
-                            className="rounded border border-dashed border-slate-300 px-2 py-0.5 text-xs text-slate-400 transition hover:border-navy-400 hover:text-navy-600"
+                            className="rounded border border-dashed border-slate-300 px-2 py-0.5 text-xs text-slate-400 transition hover:border-surepath-400 hover:text-surepath-600"
                           >
                             +
                           </button>
@@ -180,14 +180,14 @@ export default function TrackerPage() {
                       </td>
                     );
                   })}
-                  <td className="px-3 py-3 text-right font-semibold text-navy-900">
+                  <td className="px-3 py-3 text-right font-semibold text-surepath-900">
                     {projectTotal(p.id) > 0 ? formatMinutes(projectTotal(p.id)) : "—"}
                   </td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t-2 border-navy-900 bg-slate-50 font-semibold text-navy-900">
+              <tr className="border-t-2 border-surepath-900 bg-slate-50 font-semibold text-surepath-900">
                 <td className="px-4 py-3">Daily total</td>
                 {days.map((d) => (
                   <td key={d} className="px-2 py-3 text-center">
@@ -289,11 +289,11 @@ function EntryModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/50 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-surepath-950/50 p-4"
       onClick={onClose}
     >
       <div className="card w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
-        <h3 className="text-lg font-semibold text-navy-900">
+        <h3 className="text-lg font-semibold text-surepath-900">
           {editing ? "Edit time entry" : "Log time"} · {projectName}
         </h3>
         <form onSubmit={save} className="mt-4 space-y-4">

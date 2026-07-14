@@ -5,32 +5,33 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // SurePath Valuation & Advisory brand palette
-        navy: {
-          50: "#f0f5fa",
-          100: "#dbe7f2",
-          200: "#bcd2e6",
-          300: "#8fb3d4",
-          400: "#5c8dbd",
-          500: "#3a6fa5",
-          600: "#2b578a",
-          700: "#254770",
-          800: "#223d5e",
-          900: "#16324f",
-          950: "#0e2138",
+        // SurePath brand blue (#355E8C) scale
+        surepath: {
+          50: "#f2f6fa",
+          100: "#e2ebf3",
+          200: "#c7d9e8",
+          300: "#9fbdd6",
+          400: "#6b93b8",
+          500: "#355e8c", // brand
+          600: "#2e5179",
+          700: "#284465",
+          800: "#243a54",
+          900: "#1f3145",
+          950: "#131f2d",
         },
-        gold: {
-          50: "#fbf8eb",
-          100: "#f5eecb",
-          200: "#ecdc99",
-          300: "#e1c45f",
-          400: "#d7ad35",
-          500: "#c9a227",
-          600: "#ad7f1f",
-          700: "#8a5d1c",
-          800: "#734a1e",
-          900: "#633e1e",
-        },
+      },
+      fontFamily: {
+        // Corporate serif for headings/wordmark; clean neutral sans for UI text.
+        serif: ["Georgia", "Cambria", "Times New Roman", "serif"],
+        sans: [
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif",
+        ],
       },
     },
   },

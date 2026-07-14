@@ -9,20 +9,32 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   if (!user) redirect("/login");
 
   return (
-    <div className="flex min-h-screen">
-      <aside className="fixed inset-y-0 left-0 z-20 flex w-60 flex-col border-r border-navy-800 bg-navy-950">
-        <div className="border-b border-navy-800 px-5 py-5">
-          <Logo light />
+    <div className="min-h-screen bg-slate-50">
+      {/* Brand accent bar */}
+      <div className="h-1 w-full bg-surepath-500" />
+      <header className="border-b border-slate-200 bg-white">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+          <div className="flex items-center gap-8">
+            <a href="/tracker" className="shrink-0">
+              <Logo className="h-7" />
+            </a>
+            <div className="hidden md:block">
+              <NavLinks />
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="hidden text-sm text-slate-500 sm:inline" title={user.email}>
+              {user.email}
+            </span>
+            <LogoutButton />
+          </div>
         </div>
-        <NavLinks />
-        <div className="border-t border-navy-800 p-4">
-          <p className="truncate text-xs text-navy-300" title={user.email}>
-            {user.email}
-          </p>
-          <LogoutButton />
+        {/* Mobile nav */}
+        <div className="border-t border-slate-100 px-6 py-2 md:hidden">
+          <NavLinks />
         </div>
-      </aside>
-      <main className="ml-60 flex-1 px-8 py-6">{children}</main>
+      </header>
+      <main className="mx-auto max-w-6xl px-6 py-8">{children}</main>
     </div>
   );
 }
