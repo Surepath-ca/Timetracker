@@ -3,7 +3,12 @@ import { jwtVerify } from "jose";
 
 const SESSION_COOKIE = "sp_session";
 
-const PUBLIC_PATHS = ["/login", "/api/auth/request-otp", "/api/auth/verify-otp"];
+const PUBLIC_PATHS = [
+  "/login",
+  "/api/auth/request-otp",
+  "/api/auth/verify-otp",
+  "/api/health",
+];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

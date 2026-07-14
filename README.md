@@ -46,7 +46,8 @@ cp .env.example .env
 
 | Variable | Purpose |
 | --- | --- |
-| `DATABASE_URL` | PostgreSQL connection string. Use a **direct (non-pooled)** connection — the build runs `prisma migrate deploy`, which needs one. |
+| `DATABASE_URL` | PostgreSQL connection string used by the app at runtime (the pooled connection on Neon/Vercel). |
+| `DATABASE_URL_UNPOOLED` | Direct (non-pooled) connection, used only by `prisma migrate deploy` at build time. On Neon/Vercel this is set automatically; locally, set it to the same value as `DATABASE_URL`. |
 | `SESSION_SECRET` | **Required in production.** A long random string used to sign session JWTs. Generate one with `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. |
 | `ALLOWED_EMAIL_DOMAINS` | Comma-separated list of permitted email domains. Defaults to `surepathvaluation.ca`. |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | SMTP server used to email OTP codes. **In production these are required so users receive their code. If `SMTP_HOST` is unset (local dev only), OTP codes are printed to the server console instead of emailed.** |
@@ -80,7 +81,9 @@ npm run build && npm run start   # production
    (all have free tiers).
 2. **Set environment variables** in the Vercel project (Settings → Environment Variables),
    for the Production environment:
-   - `DATABASE_URL` — your Postgres **direct** connection string.
+   - `DATABASE_URL` — your Postgres connection string (Neon's **pooled** URL is fine).
+   - `DATABASE_URL_UNPOOLED` — Neon's **unpooled/direct** URL (Neon's Vercel integration
+     sets this automatically). Migrations run against this at build time.
    - `SESSION_SECRET` — a long random string (see command above).
    - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` — your mail provider
      (e.g. SendGrid, Postmark, Amazon SES, Gmail SMTP). **Without SMTP, users never
@@ -89,6 +92,9 @@ npm run build && npm run start   # production
 3. **Redeploy.** The `build` script runs `prisma generate && prisma migrate deploy` before
    `next build`, so the schema is created/updated on the database automatically at deploy
    time.
+4. **Verify.** After the deploy finishes, open `/api/health` on your deployment. It reports
+   whether the database is reachable and the tables exist — a quick way to confirm the fix
+   without digging through logs.
 
 ## How authentication works
 
