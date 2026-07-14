@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // Used by `prisma migrate deploy` at build time. On Neon/Vercel this is the
+  // unpooled (direct) connection; migrations must not run through pgbouncer.
+  // Falls back to DATABASE_URL locally if you don't set it.
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model User {
+  id          String          @id @default(cuid())
+  email       String          @unique
+  name        String?
+  createdAt   DateTime        @default(now())
+  memberships ProjectMember[]
+  timeEntries TimeEntry[]
+}
+
+model OtpToken {
+  id        String    @id @default(cuid())
+  email     String
+  codeHash  String
+  expiresAt DateTime
+  attempts  Int       @default(0)
+  consumedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([email])
+}
+
+model Project {
+  id          String          @id @default(cuid())
+  name        String
+  client      String?
+  description String?
+  color       String          @default("#1e3a5f")
+  billable    Boolean         @default(true)
+  archived    Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  members     ProjectMember[]
+  timeEntries TimeEntry[]
+}
+
+model ProjectMember {
+  id        String   @id @default(cuid())
+  projectId String
+  userId    String
+  role      String   @default("MEMBER") // OWNER | MEMBER
+  createdAt DateTime @default(now())
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+}
+
+model TimeEntry {
+  id        String   @id @default(cuid())
+  projectId String
+  userId    String
+  date      String // YYYY-MM-DD
+  minutes   Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, date])
+  @@index([userId, date])
+}
